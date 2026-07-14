@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 flex items-center justify-between w-full mx-auto bg-background py-4 px-15 tracking-wide">
+    <nav className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-15 py-4">
       <div id="logo">
         <Image
           src="/logo/kerjabagus_icon.svg"
