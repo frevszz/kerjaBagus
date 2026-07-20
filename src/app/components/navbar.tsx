@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -44,18 +46,14 @@ export default function Navbar() {
       <div className="flex gap-4">
         <Link
           href="/login"
-          className="text-[#F4991A] border border-[#F4991A] py-2 px-9 rounded-md
-        transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-103
-          cursor-pointer"
+          className="text-[#F4991A] border border-[#F4991A] py-2 px-9 rounded-md transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-103 cursor-pointer"
         >
           Masuk
         </Link>
 
         <Link
           href="/register"
-          className="bg-[#F4991A] text-white  py-2 px-9 rounded-md
-        transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-103
-          cursor-pointer"
+          className="bg-[#F4991A] text-white py-2 px-9 rounded-md transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-103 cursor-pointer"
         >
           Daftar
         </Link>
