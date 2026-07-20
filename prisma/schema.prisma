@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  passwordHash   String
+
+  isClient       Boolean @default(true)
+  isFreelancer   Boolean @default(false)
+  isAdmin        Boolean @default(false)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  profile        Profile?
+}
+
+model Address {
+  id String @id @default(cuid())
+
+  country    String
+  province   String
+  city       String
+  district   String?
+  village    String?
+  postalCode String?
+
+  latitude   Float?
+  longitude  Float?
+
+  profile Profile?
+  job     Job?
+}
+
+model Profile {
+  id          String   @id @default(cuid())
+
+  displayName String
+  username    String   @unique
+
+  avatar      String?
+
+  headline    String
+  bio         String?  @db.Text
+
+  website     String?
+  github      String?
+  linkedin    String?
+  portfolio   String?
+  hourlyRate  Int?
+  currency    String?
+
+  isAvailable Boolean @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId      String @unique
+  user        User @relation(fields: [userId], references: [id])
+
+  addressId   String? @unique
+  address     Address? @relation(fields: [addressId], references: [id])
+
+  job         Job[]
+}
+
+enum JobLocationType {
+  ONSITE
+  REMOTE
+  HYBRID
+}
+
+model Job {
+  id            String   @id @default(cuid())
+
+
+  title         String
+  description   String   @db.Text
+  banner        String?
+
+  budgetMin     Int?
+  budgetMax     Int?
+
+  deadline      DateTime?
+
+  isOpen        Boolean  @default(true)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  locationType  JobLocationType
+
+  profileId     String
+  profile       Profile @relation(fields: [profileId], references: [id])
+
+  addressId     String? @unique
+  address       Address? @relation(fields: [addressId], references: [id])
+}

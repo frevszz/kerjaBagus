@@ -22,9 +22,7 @@ export default function JobCard({
 }: JobCardProps) {
   return (
     <div
-      className="bg-white rounded-xl p-5 w-auto md:w-90 shadow-sm border border-gray-100 flex flex-col gap-3
-      transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-103
-      cursor-pointer"
+      className="bg-white rounded-xl p-5 w-auto md:w-90 shadow-sm border border-gray-100 flex flex-col gap-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-103 cursor-pointer"
     >
       {/* HEADER */}
       <div className="flex items-start justify-between">

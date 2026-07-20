@@ -142,6 +142,7 @@ export default function Home() {
           {/* JOB CARD */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {featuredJobs.map((job) => (
+              
               <JobCard key={job.id} {...job} />
             ))}
           </div>
