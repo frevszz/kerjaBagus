@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import "./page.css";
+import JobCard from "@/app/components/jobCard";
+import { jobs } from "@/app/jobs/data";
 
 const WILAYAH_OPTIONS = [
   "Aceh",
@@ -64,8 +66,10 @@ export default function Home() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const featuredJobs = jobs.slice(0, 4);
+
   return (
-    <main className="flex flex-col flex-1 font-sans">
+    <main className="flex flex-col font-sans">
       {/* HERO SECTION */}
       <section className="hero-section-container">
         <div className="hero-section-content">
@@ -128,9 +132,16 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="cta-container">
-        <div className="cta-content">
-          <h1>CTA</h1>
+      <section className="cta-container flex flex-col">
+        <div className="cta-content mt-20">
+          <h2 className="text-3xl font-semibold mb-8 text-center">
+            Lowongan Terbaru
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {featuredJobs.map((job) => (
+              <JobCard key={job.id} {...job} />
+            ))}
+          </div>
         </div>
       </section>
     </main>
