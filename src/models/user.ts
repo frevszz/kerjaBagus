@@ -1,4 +1,4 @@
-import { User } from "@/generated/prisma/client";
+import { Prisma, Profile, User } from "@/generated/prisma/client";
 
 export interface UserProfile {
   id: string;
@@ -9,7 +9,12 @@ export interface UserProfile {
   avatar?: string | null;
 }
 
-export type GetUserResponse = User;
+export type GetUserResponse =
+  Prisma.UserGetPayload<{
+    include: {
+      profile: true;
+    };
+  }>;
 
 export interface UpdateUserRequest {
   email?: string;

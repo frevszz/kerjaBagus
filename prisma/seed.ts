@@ -4,9 +4,9 @@ import { prisma } from "@/lib/prisma";
 
 
 async function main() {
-  await seedUsers(prisma, 50);
+  await seedUsers(prisma, 5);
 
-  await seedJobs(prisma, 10);
+  await seedJobs(prisma, 2);
 
   console.log("Database seeded");
 }

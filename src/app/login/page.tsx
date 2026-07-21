@@ -6,13 +6,13 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { RiArrowLeftLine } from "@remixicon/react";
 import { login } from "@/services/auth.service";
+import { ApiError } from "@/services/api";
 
 export default function LoginPage() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  
+  const [password, setPassword] = useState("");  
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -31,15 +31,14 @@ export default function LoginPage() {
         password,
       });
 
-      localStorage.setItem(
-        "kerjabagus_access_token",
-        res.accessToken
-      );
-
       router.push("/profile");
+      router.refresh();
     } catch (err) {
-      setError("Email atau password salah.");
-      console.error(err)
+      if (err instanceof ApiError) {
+        setError(err.message);
+      } else {
+        setError("Terjadi kesalahan.");
+      }
     } finally {
       setLoading(false);
     }

@@ -5,8 +5,7 @@ export async function generateUser() {
   const hashedPassword = await bcrypt.hash("password123", 12);
   return {
     email: faker.internet.email().toLowerCase(),
-
-    // nanti bisa diganti bcrypt hash
+    phone: faker.phone.number({style:"mobile"}),
     passwordHash: hashedPassword,
 
     isClient: faker.datatype.boolean(),
