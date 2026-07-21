@@ -1,15 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
-}
-
-datasource db {
-  provider = "postgresql"
 }
 
 generator erd {
@@ -17,103 +8,82 @@ generator erd {
   output   = "./ERD.png"
 }
 
+datasource db {
+  provider = "postgresql"
+}
+
 model User {
-  id             String   @id @default(cuid())
-  email          String   @unique
-  passwordHash   String
-
-  isClient       Boolean @default(false)
-  isFreelancer   Boolean @default(true)
-  isAdmin        Boolean @default(false)
-
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  profile        Profile?
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  isClient     Boolean  @default(false)
+  isFreelancer Boolean  @default(true)
+  isAdmin      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  profile      Profile?
 }
 
 model Address {
-  id String @id @default(cuid())
-
+  id         String   @id @default(cuid())
   country    String
   province   String
   city       String
   district   String?
   village    String?
   postalCode String?
-
   latitude   Float?
   longitude  Float?
-
-  profile Profile?
-  job     Job?
+  job        Job?
+  profile    Profile?
 }
 
 model Profile {
   id          String   @id @default(cuid())
-
   displayName String
   username    String   @unique
-
   avatar      String?
-
   headline    String
-  bio         String?  @db.Text
-
+  bio         String?
   website     String?
   github      String?
   linkedin    String?
   portfolio   String?
   hourlyRate  Int?
   currency    String?
-
-  isAvailable Boolean @default(true)
-
+  isAvailable Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-  userId      String @unique
-  user        User @relation(fields: [userId], references: [id])
-
-  addressId   String? @unique
-  address     Address? @relation(fields: [addressId], references: [id])
-
+  userId      String   @unique
+  addressId   String?  @unique
   job         Job[]
+  address     Address? @relation(fields: [addressId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Job {
+  id           String          @id @default(cuid())
+  company      String
+  title        String
+  description  String
+  banner       String?
+  budgetMin    Int?
+  budgetMax    Int?
+  deadline     DateTime?
+  isVerified   Boolean         @default(false)
+  isOpen       Boolean         @default(true)
+  tags         String[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  locationType JobLocationType
+  profileId    String
+  addressId    String?         @unique
+  address      Address?        @relation(fields: [addressId], references: [id])
+  profile      Profile         @relation(fields: [profileId], references: [id])
 }
 
 enum JobLocationType {
   ONSITE
   REMOTE
   HYBRID
-}
-
-model Job {
-  id            String   @id @default(cuid())
-
-  company       String
-
-  title         String
-  description   String   @db.Text
-  banner        String?
-
-  budgetMin     Int?
-  budgetMax     Int?
-
-  deadline      DateTime?
-
-  isVerified    Boolean @default(false)
-  isOpen        Boolean  @default(true)
-
-  tags          String[]
-
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  locationType  JobLocationType
-
-  profileId     String
-  profile       Profile @relation(fields: [profileId], references: [id])
-
-  addressId     String? @unique
-  address       Address? @relation(fields: [addressId], references: [id])
 }

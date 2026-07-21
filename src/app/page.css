@@ -1,11 +1,9 @@
 .hero-section-container {
   position: relative;
-  width: 100%;
-  min-height: calc(100vh - 80px);
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding-top: 4rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
   overflow: hidden;
 }
 
@@ -35,12 +33,18 @@
   min-height: 100vh;
 
   display: flex;
+  justify-content: center;
 
   align-items: center;
+
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 
   overflow: hidden;
 }
 
 .cta-content {
   position: relative;
+  width: 100%;
+  max-width: 1200px;
 }

@@ -3,11 +3,14 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { RiAddLine } from "@remixicon/react";
+import { RiAddLine, RiMenuLine, RiCloseLine } from "@remixicon/react";
 import { getUsernameInitials } from "../utils/user";
 
 export default function Navbar() {
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [user, setUser] = useState<{ name: string; email: string } | null>(
+    null,
+  );
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const loadUser = () => {
     const savedUser = localStorage.getItem("user_kerjabagus");
@@ -24,9 +27,17 @@ export default function Navbar() {
     return () => window.removeEventListener("userUpdated", loadUser);
   }, []);
 
+  const navLinks = [
+    { href: "/", label: "Beranda" },
+    { href: "/profile", label: "Profil" },
+    { href: "/jobs", label: "Lowongan" },
+    { href: "/cv-generator", label: "CV Generator" },
+    { href: "#", label: "Panduan" },
+  ];
+
   return (
-    <nav className="sticky top-0 z-50 h-20 flex items-center justify-between px-15 backdrop-blur-lg bg-white/20">
-      <div className="relative h-32 w-32">
+    <nav className="sticky top-0 z-50 flex items-center justify-between h-20 px-4 md:px-15 backdrop-blur-lg bg-white/20">
+      <div className="relative h-30 w-30 md:h-32 md:w-32 shrink-0">
         <Link href="/">
           <Image
             src="/logo/kerjabagus_icon.svg"
@@ -38,26 +49,19 @@ export default function Navbar() {
         </Link>
       </div>
 
-      <ul id="nav-links" className="flex gap-7">
-        <li className="py-4 md:py-0">
-          <Link href="/" className="hover:font-semibold text-xl">Beranda</Link>
-        </li>
-        <li className="py-4 md:py-0">
-          <Link href="/profile" className="hover:font-semibold text-xl">Profil</Link>
-        </li>
-        <li className="py-4 md:py-0">
-          <Link href="/jobs" className="hover:font-semibold text-xl">Lowongan</Link>
-        </li>
-        <li className="py-4 md:py-0">
-          <Link href="/cv-generator" className="hover:font-semibold text-xl">CV Generator</Link>
-        </li>
-        <li className="py-4 md:py-0">
-          <Link href="#" className="hover:font-semibold text-xl">Panduan</Link>
-        </li>
+      {/* MENU DESKTOP */}
+      <ul id="nav-links" className="hidden lg:flex gap-7">
+        {navLinks.map((link) => (
+          <li key={link.label}>
+            <Link href={link.href} className="hover:font-semibold text-xl">
+              {link.label}
+            </Link>
+          </li>
+        ))}
       </ul>
 
-      <div className="flex items-center gap-4">
-        {/* KONDISI NAVBAR: BILA SUDAH LOGIN VS BELUM LOGIN */}
+      {/* ACTIONS DESKTOP */}
+      <div className="hidden lg:flex items-center gap-4">
         {user ? (
           <Link
             href="/profile"
@@ -87,6 +91,66 @@ export default function Navbar() {
           Post Pekerjaan
         </Link>
       </div>
+
+      {/* HAMBURGER MOBILE */}
+      <button
+        type="button"
+        onClick={() => setMobileOpen((prev) => !prev)}
+        className="lg:hidden p-2"
+        aria-label="Toggle menu"
+      >
+        {mobileOpen ? <RiCloseLine size={28} /> : <RiMenuLine size={28} />}
+      </button>
+
+      {/* DROPDOWN MOBILE */}
+      {mobileOpen && (
+        <div className="absolute top-20 left-0 right-0 lg:hidden bg-white shadow-lg border-t border-gray-100 flex flex-col p-4 gap-2">
+          {navLinks.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+              className="py-2 px-2 text-base hover:bg-gray-50 rounded"
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          <div className="border-t border-gray-100 mt-2 pt-3 flex flex-col gap-2">
+            {user ? (
+              <Link
+                href="/profile"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 px-4 py-2 rounded-full border border-[#F6D39E] bg-[#FBF6F0]/80"
+              >
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#E2D2B4] text-xs font-bold text-[#386641]">
+                  {getUsernameInitials(user.name)}
+                </div>
+                <span className="text-sm font-semibold text-[#386641] truncate">
+                  {user.name}
+                </span>
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className="text-center text-[#77746E] border border-[#F6D39E] bg-[#FBF6F0] py-2 px-9 rounded-lg"
+              >
+                Masuk
+              </Link>
+            )}
+
+            <Link
+              href="/jobs/create"
+              onClick={() => setMobileOpen(false)}
+              className="bg-[#F4991A] text-white py-2 px-4 rounded-md text-center"
+            >
+              <RiAddLine size={20} className="inline mr-2" />
+              Post Pekerjaan
+            </Link>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

@@ -1,60 +1,23 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import "./page.css";
 import JobCard from "@/app/components/jobCard";
-import { jobs } from "@/app/jobs/data";
 import { Job } from "@/generated/prisma/client";
 import { getJobs } from "@/services/jobs.service";
 import { getCompanyInitials } from "./utils/company";
 import { formatSalaryRange } from "./utils/salary";
 import { faker } from "@faker-js/faker";
-
-const WILAYAH_OPTIONS = [
-  "Aceh",
-  "Sumatera Utara",
-  "Sumatera Barat",
-  "Riau",
-  "Kepulauan Riau",
-  "Jambi",
-  "Sumatera Selatan",
-  "Bangka Belitung",
-  "Bengkulu",
-  "Lampung",
-  "DKI Jakarta",
-  "Jawa Barat",
-  "Jawa Tengah",
-  "DI Yogyakarta",
-  "Jawa Timur",
-  "Banten",
-  "Bali",
-  "Nusa Tenggara Barat",
-  "Nusa Tenggara Timur",
-  "Kalimantan Barat",
-  "Kalimantan Tengah",
-  "Kalimantan Selatan",
-  "Kalimantan Timur",
-  "Kalimantan Utara",
-  "Sulawesi Utara",
-  "Sulawesi Tengah",
-  "Sulawesi Selatan",
-  "Sulawesi Tenggara",
-  "Gorontalo",
-  "Sulawesi Barat",
-  "Maluku",
-  "Maluku Utara",
-  "Papua",
-  "Papua Barat",
-  "Papua Barat Daya",
-  "Papua Tengah",
-  "Papua Pegunungan",
-  "Papua Selatan",
-];
+import { RiSearchLine, RiArrowDropDownFill } from "@remixicon/react";
+import { PROVINCES } from "@/lib/constant";
 
 export default function Home() {
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
   const [wilayah, setWilayah] = useState("");
+  const [keyword, setKeyword] = useState("");
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   // handle click diluar search bar
@@ -71,31 +34,41 @@ export default function Home() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (keyword.trim()) params.set("search", keyword.trim());
+    if (wilayah) params.set("province", wilayah);
+    router.push(`/jobs?${params.toString()}`);
+  };
+
   const [featuredJobs, setFeaturedJobs] = useState<Job[]>([]);
-  
-    useEffect(() => {
-      async function load() {
-        const { data } = await getJobs({
-          limit: 3,
-        });
-  
-        setFeaturedJobs(data);
-      }
-  
-      load();
-    }, []);
+
+  useEffect(() => {
+    async function load() {
+      const { data } = await getJobs({
+        limit: 9,
+      });
+
+      setFeaturedJobs(data);
+    }
+
+    load();
+  }, []);
 
   return (
     <main className="flex flex-col font-sans">
       {/* HERO SECTION */}
-      <section className="hero-section-container">
+      <section className="hero-section-container h-200 md:h-screen items-center justify-center">
         <div className="hero-section-content">
-          <h2 className="text-6xl font-bold">Temukan proyek dan lowongan</h2>
-          <h2 className="text-6xl font-bold text-[#344F1F]">
+          <h2 className="text-5xl md:text-6xl font-bold">
+            Temukan proyek dan lowongan
+          </h2>
+          <h2 className="text-5xl md:text-6xl font-bold text-[#344F1F]">
             yang cocok untuk keahlianmu!
           </h2>
 
-          <p className="mt-5 text-xl text-gray-600">
+          <p className="mt-5 text-lg md:text-xl text-gray-600">
             Ribuan lowongan kerja harian dan bulanan terpercaya siap buat kamu
             lamar sekarang.
           </p>
@@ -103,33 +76,57 @@ export default function Home() {
           {/* SEARCH BAR */}
           <div className="flex justify-center mt-5">
             <div className="relative w-full max-w-3xl" ref={wrapperRef}>
-              <form className="flex items-center rounded-md bg-white/90 shadow-lg pl-6 pr-1.5 py-4 w-full">
+              <form
+                onSubmit={handleSearch}
+                className="flex items-center rounded-md bg-white/90 shadow-lg pl-6 pr-1.5 py-2 md:py-4 w-full"
+              >
                 {/* KATA KUNCI */}
-                <div className="flex flex-col flex-1 min-w-0">
+                <div className="flex flex-1 min-w-0">
+                  <RiSearchLine className="text-gray-400 w-5 h-5 md:w-7 md:h-7 shrink-0" />
                   <input
                     type="search"
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
                     placeholder="UI/UX Designer, Content Writer..."
-                    className="bg-transparent text-sm font-medium outline-none w-full placeholder:text-gray-500"
+                    className="bg-transparent ml-4 text-sm font-medium outline-none w-full placeholder:text-gray-500"
                   />
                 </div>
 
                 <div className="h-8 w-px bg-gray-200 mx-4 shrink-0" />
                 {/* FILTER WILAYAH */}
-                <div className="flex flex-col flex-1 min-w-0">
+                <div className="flex flex-1 min-w-0">
                   <button
                     type="button"
                     onClick={() => setOpen((prev) => !prev)}
-                    className="bg-transparent text-sm font-medium outline-none w-full text-left text-gray-500"
+                    className="bg-transparent flex items-center text-sm ml-3 font-medium outline-none cursor-pointer w-full text-left text-gray-500"
                   >
-                    {wilayah || "Lokasi"}
+                    <RiArrowDropDownFill className="mr-3 shrink-0" />
+                    <span className="truncate">{wilayah || "Lokasi"}</span>
                   </button>
                 </div>
+
+                <button
+                  type="submit"
+                  className="mr-3 shrink-0 rounded-md bg-[#F4991A] px-6 py-2 text-sm font-medium text-white hover:bg-[#F4991A]/80"
+                >
+                  Cari
+                </button>
               </form>
 
               {/*  LIST */}
               {open && (
                 <div className="absolute left-0 right-0 mt-2 bg-white rounded-md shadow-lg border border-gray-100 max-h-72 overflow-y-auto z-50">
-                  {WILAYAH_OPTIONS.map((option) => (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWilayah("");
+                      setOpen(false);
+                    }}
+                    className="block w-full text-left px-5 py-2.5 text-sm text-gray-500 hover:bg-gray-50 border-b border-gray-100"
+                  >
+                    Semua Lokasi
+                  </button>
+                  {PROVINCES.map((option) => (
                     <button
                       key={option}
                       type="button"
