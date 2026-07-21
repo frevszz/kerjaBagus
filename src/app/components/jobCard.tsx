@@ -1,4 +1,8 @@
-import { RiBookmarkLine, RiVerifiedBadgeFill } from "@remixicon/react";
+import {
+  RiBookmarkLine,
+  RiVerifiedBadgeFill,
+  RiMapPinLine,
+} from "@remixicon/react";
 
 type JobCardProps = {
   id: string;
@@ -6,6 +10,7 @@ type JobCardProps = {
   logoColor: string;
   title: string;
   company: string;
+  province: string;
   tags: string[];
   salaryRange: string;
   verified?: boolean;
@@ -16,14 +21,13 @@ export default function JobCard({
   logoColor,
   title,
   company,
+  province,
   tags,
   salaryRange,
   verified = true,
 }: JobCardProps) {
   return (
-    <div
-      className="bg-white rounded-xl p-5 w-auto md:w-90 shadow-sm border border-gray-100 flex flex-col gap-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-103 cursor-pointer"
-    >
+    <div className="bg-white rounded-xl p-5 w-auto md:w-90 shadow-sm border border-gray-100 flex flex-col gap-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-103 cursor-pointer">
       {/* HEADER */}
       <div className="flex items-start justify-between">
         <div
@@ -45,6 +49,12 @@ export default function JobCard({
       <div>
         <h3 className="font-semibold text-gray-900">{title}</h3>
         <p className="text-sm text-gray-500">{company}</p>
+      </div>
+
+      {/* LOCATION (PROVINCE) */}
+      <div className="flex items-center gap-1.5 text-gray-600">
+        <RiMapPinLine size={16} className="text-gray-400 shrink-0" />
+        <p className="text-sm font-medium text-gray-700">{province}</p>
       </div>
 
       {/* TAGS */}
@@ -71,7 +81,7 @@ export default function JobCard({
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="h-9 w-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50"
+            className="h-9 w-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
           >
             <RiBookmarkLine size={16} className="text-gray-500" />
           </button>

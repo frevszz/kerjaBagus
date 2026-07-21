@@ -27,7 +27,7 @@ export default function Navbar() {
     async function loadUser() {
       try {
         const data = await me();
-        const userData = await getUser(data.user.id)
+        const userData = await getUser(data.user.id);
         setUser(userData);
       } catch {
         setUser(null);
@@ -39,7 +39,6 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Beranda" },
-    { href: "/profile", label: "Profil" },
     { href: "/jobs", label: "Lowongan" },
     { href: "/cv-generator", label: "CV Generator" },
     { href: "#", label: "Panduan" },

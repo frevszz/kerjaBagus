@@ -4,10 +4,10 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "./page.css";
 import JobCard from "@/app/components/jobCard";
-import { Job } from "@/generated/prisma/client";
 import { getJobs } from "@/services/jobs.service";
 import { getCompanyInitials } from "./utils/company";
 import { formatSalaryRange } from "./utils/salary";
+import { JobListItem } from "@/models/job";
 import { faker } from "@faker-js/faker";
 import { RiSearchLine, RiArrowDropDownFill } from "@remixicon/react";
 import { PROVINCES } from "@/lib/constant";
@@ -42,7 +42,7 @@ export default function Home() {
     router.push(`/jobs?${params.toString()}`);
   };
 
-  const [featuredJobs, setFeaturedJobs] = useState<Job[]>([]);
+  const [featuredJobs, setFeaturedJobs] = useState<JobListItem[]>([]);
 
   useEffect(() => {
     async function load() {
@@ -163,6 +163,11 @@ export default function Home() {
                 logoColor={faker.color.rgb()}
                 title={job.title}
                 company={job.company}
+                province={
+                  job.address?.province
+                    ? `${job.address.city}, ${job.address.province}`
+                    : job.address?.city || "Lokasi tidak tersedia"
+                }
                 tags={job.tags}
                 salaryRange={formatSalaryRange(job.budgetMin, job.budgetMax)}
                 verified={job.isVerified}

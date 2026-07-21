@@ -1,5 +1,12 @@
 import { Job } from "@/generated/prisma/client";
 
+export type JobListItem = Job & {
+  address?: {
+    city: string | null;
+    province: string | null;
+  } | null;
+};
+
 export interface GetJobsParams {
   /** Page number for pagination (starts from 1). */
   page?: number;
@@ -32,9 +39,8 @@ export interface GetJobsParams {
   sort?: "newest" | "oldest" | "budget";
 }
 
-
 export interface GetJobsResponse {
-  data: Job[];
+  data: JobListItem[];
 
   pagination: {
     page: number;

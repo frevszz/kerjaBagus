@@ -13,23 +13,9 @@ datasource db {
 }
 
 model User {
-<<<<<<< HEAD
-  id             String   @id @default(cuid())
-  email          String   @unique
-  phone          String   @unique
-  passwordHash   String
-
-  isClient       Boolean @default(false)
-  isFreelancer   Boolean @default(true)
-  isAdmin        Boolean @default(false)
-
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  profile        Profile?
-=======
   id           String   @id @default(cuid())
   email        String   @unique
+  phone        String   @unique
   passwordHash String
   isClient     Boolean  @default(false)
   isFreelancer Boolean  @default(true)
@@ -37,7 +23,6 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   profile      Profile?
->>>>>>> fcef7979fff01bb42fdf469a746805e1e186fbf5
 }
 
 model Address {
