@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,35 @@ import { RiArrowLeftLine } from "@remixicon/react";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg("");
+
+    // 1. Ambil data user yang pernah register dari localStorage
+    const savedUser = localStorage.getItem("user_kerjabagus");
+
+    if (!savedUser) {
+      setErrorMsg("Belum ada akun terdaftar. Silakan buat akun dulu!");
+      return;
+    }
+
+    const userData = JSON.parse(savedUser);
+
+    // 2. Cek apakah email yang diketik sama dengan email terdaftar
+    if (userData.email === email) {
+      // Trigger event agar Navbar otomatis berubah jadi avatar profil
+      window.dispatchEvent(new Event("userUpdated"));
+      
+      // Berhasil login -> Masuk ke Profile
+      router.push("/profile");
+    } else {
+      // Email beda / tidak ditemukan
+      setErrorMsg("Email tidak terdaftar! Gunakan email saat Register.");
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-start bg-gradient-to-b from-[#FAF8F0] via-[#FAF8F0] to-[#E2E8DD] px-4 pt-30 pb-16">
@@ -28,13 +57,12 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={() => router.back()}
-            className="flex items-center gap-1 hover:underline"
+            className="flex items-center gap-1 hover:underline cursor-pointer"
           >
             <RiArrowLeftLine size={15} />
             Kembali
           </button>
           <a href="#" className="flex items-center gap-1 hover:underline">
-            {" "}
             Bantuan
           </a>
         </div>
@@ -44,12 +72,22 @@ export default function LoginPage() {
           Temukan karir impianmu disini.
         </p>
 
-        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+        {/* Pesan Error Jika Email Salah */}
+        {errorMsg && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-lg">
+            {errorMsg}
+          </div>
+        )}
+
+        <form className="space-y-4" onSubmit={handleLogin}>
           <div>
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Masukkan alamat Email"
               className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-[#386641] focus:outline-none transition"
+              required
             />
             <span className="text-[10px] text-gray-400 mt-1 block px-1">
               Contoh: email@karir.com
@@ -57,8 +95,13 @@ export default function LoginPage() {
           </div>
 
           <button
-            type="button"
-            className="w-full rounded-lg bg-gray-100 py-3 text-sm font-semibold text-gray-400 cursor-not-allowed transition"
+            type="submit"
+            disabled={!email}
+            className={`w-full rounded-lg py-3 text-sm font-semibold transition ${
+              email
+                ? "bg-[#386641] text-white cursor-pointer hover:bg-[#2d5234]"
+                : "bg-gray-100 text-gray-400 cursor-not-allowed"
+            }`}
           >
             Lanjutkan
           </button>
@@ -83,25 +126,25 @@ export default function LoginPage() {
         <div className="space-y-3">
           <button
             type="button"
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#386641] px-4 py-2.5 text-sm font-semibold text-[#386641] bg-white hover:bg-gray-50 transition"
+            onClick={() => router.push("/profile")}
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#386641] px-4 py-2.5 text-sm font-semibold text-[#386641] bg-white hover:bg-gray-50 transition cursor-pointer"
           >
-            <span className="font-bold text-red-500">G</span> Masuk dengan
-            Google
+            <span className="font-bold text-red-500">G</span> Masuk dengan Google
           </button>
           <button
             type="button"
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#386641] px-4 py-2.5 text-sm font-semibold text-[#386641] bg-white hover:bg-gray-50 transition"
+            onClick={() => router.push("/profile")}
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#386641] px-4 py-2.5 text-sm font-semibold text-[#386641] bg-white hover:bg-gray-50 transition cursor-pointer"
           >
-            <span className="font-bold text-blue-700">f</span> Masuk dengan
-            Facebook
+            <span className="font-bold text-blue-700">f</span> Masuk dengan Facebook
           </button>
         </div>
 
         <div className="mt-8 pt-4 border-t border-gray-100 text-center text-xs text-gray-500">
           Apakah Anda HR?{" "}
-          <a href="#" className="text-[#386641] font-semibold hover:underline">
+          <Link href="/jobs/create" className="text-[#386641] font-semibold hover:underline">
             Buka Lowongan di KerjaBagus.com
-          </a>
+          </Link>
         </div>
       </div>
     </div>
