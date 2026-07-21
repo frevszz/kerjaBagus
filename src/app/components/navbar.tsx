@@ -5,11 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { RiAddLine, RiMenuLine, RiCloseLine } from "@remixicon/react";
 import { getUsernameInitials } from "../utils/user";
+import { me } from "@/services/auth.service";
+import { User } from "@/generated/prisma/client";
+import { getUser } from "@/services/user.service";
+import { GetUserResponse } from "@/models/user";
 
 export default function Navbar() {
-  const [user, setUser] = useState<{ name: string; email: string } | null>(
-    null,
-  );
+  const [user, setUser] = useState<GetUserResponse | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const loadUser = () => {
@@ -22,9 +24,17 @@ export default function Navbar() {
   };
 
   useEffect(() => {
+    async function loadUser() {
+      try {
+        const data = await me();
+        const userData = await getUser(data.user.id)
+        setUser(userData);
+      } catch {
+        setUser(null);
+      }
+    }
+
     loadUser();
-    window.addEventListener("userUpdated", loadUser);
-    return () => window.removeEventListener("userUpdated", loadUser);
   }, []);
 
   const navLinks = [
@@ -68,10 +78,10 @@ export default function Navbar() {
             className="flex items-center gap-3 px-4 py-1.5 rounded-full border border-[#F6D39E] bg-[#FBF6F0]/80 hover:bg-[#FBF6F0] transition"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#E2D2B4] text-xs font-bold text-[#386641]">
-              {getUsernameInitials(user.name)}
+              {getUsernameInitials(user.profile?.displayName ?? "")}
             </div>
             <span className="text-sm font-semibold text-[#386641] max-w-[120px] truncate">
-              {user.name}
+              {user.profile?.displayName ?? ""}
             </span>
           </Link>
         ) : (
@@ -124,10 +134,10 @@ export default function Navbar() {
                 className="flex items-center gap-3 px-4 py-2 rounded-full border border-[#F6D39E] bg-[#FBF6F0]/80"
               >
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#E2D2B4] text-xs font-bold text-[#386641]">
-                  {getUsernameInitials(user.name)}
+                  {getUsernameInitials(user.profile?.displayName ?? "")}
                 </div>
                 <span className="text-sm font-semibold text-[#386641] truncate">
-                  {user.name}
+                  {user.profile?.displayName ?? ""}
                 </span>
               </Link>
             ) : (

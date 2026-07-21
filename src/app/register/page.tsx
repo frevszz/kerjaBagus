@@ -5,12 +5,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { RiArrowLeftLine, RiEyeLine, RiEyeOffLine } from "@remixicon/react";
+import { register } from "@/services/auth.service";
+import { ApiError } from "@/services/api";
 
 export default function RegisterPage() {
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const [formData, setFormData] = useState({
     name: "",
+    username: "",
     email: "",
     phone: "",
     password: "",
@@ -25,30 +31,38 @@ export default function RegisterPage() {
 
   const isFormValid =
     formData.name &&
+    formData.username &&
     formData.email &&
     formData.phone &&
     formData.password.length >= 8 &&
     formData.password === formData.confirmPassword;
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isFormValid) {
-      // Simpan data user ke LocalStorage
-      const userData = {
-        name: formData.name,
-        email: formData.email,
-        role: "Freelancer", // default role kosongan
-        bio: "-",
-        location: "-",
-        skills: [],
-      };
-      localStorage.setItem("user_kerjabagus", JSON.stringify(userData));
+      const { name, email, password, phone, username } = formData;
       
-      // Trigger event agar Navbar langsung ter-update
-      window.dispatchEvent(new Event("userUpdated"));
 
-      // Pindah ke halaman profile
-      router.push("/profile");
+      setLoading(true);
+      setError("");
+  
+      try {
+        await register({
+          email,
+          username,
+          displayName: name,
+          password,
+          phone,
+        });
+
+        router.push("/profile");
+      } catch (err) {
+        if (err instanceof ApiError) {
+          setError(err.message);
+        } else {
+          setError("Terjadi kesalahan.");
+        }
+      }
     }
   };
 
@@ -86,6 +100,14 @@ export default function RegisterPage() {
         </p>
 
         <form className="space-y-4" onSubmit={handleRegister}>
+
+          {
+            error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-lg">
+                {error}
+              </div>
+            )
+          }
           <div>
             <input
               type="text"
@@ -93,6 +115,19 @@ export default function RegisterPage() {
               value={formData.name}
               onChange={handleChange}
               placeholder="Nama Lengkap*"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-[#386641] focus:outline-none transition"
+              required
+            />
+          </div>
+
+
+          <div>
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Username*"
               className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-[#386641] focus:outline-none transition"
               required
             />
