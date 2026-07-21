@@ -107,6 +107,8 @@ export async function GET(request: Request) {
     select: {
       id: true,
 
+      company: true,
+
       title: true,
       banner: true,
 
@@ -118,6 +120,11 @@ export async function GET(request: Request) {
       locationType: true,
 
       createdAt: true,
+
+      isOpen: true,
+      isVerified: true,
+
+      tags: true,
 
       profile: {
         select: {
