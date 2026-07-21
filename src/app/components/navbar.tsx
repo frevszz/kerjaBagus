@@ -40,6 +40,7 @@ export default function Navbar() {
   const navLinks = [
     { href: "/", label: "Beranda" },
     { href: "/jobs", label: "Lowongan" },
+    { href: "/", label: "Tersimpan" },
     { href: "/cv-generator", label: "CV Generator" },
     { href: "#", label: "Panduan" },
   ];
