@@ -12,6 +12,7 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -80,6 +81,13 @@ export default function LoginPage() {
         </p>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
+          {
+            error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-lg">
+                {error}
+              </div>
+            )
+          }
           <div>
             <input
               type="email"
@@ -104,13 +112,6 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:border-[#386641] focus:outline-none transition"
             />
-            {
-              error && (
-                <div className="rounded-lg p-3 text-sm text-red-600">
-                  {error}
-                </div>
-              )
-            }
           </div>
 
           <button

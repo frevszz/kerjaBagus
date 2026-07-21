@@ -1,3 +1,4 @@
+import { generateAccessToken } from "@/lib/jwt";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
@@ -29,7 +30,16 @@ export async function POST(request: Request) {
     );
   }
 
+  const accessToken = await generateAccessToken(user.id);
+
   return Response.json({
-    message: "Login berhasil",
+    accessToken,
+    user: {
+      id: user.id,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      isClient: user.isClient,
+      isFreelancer: user.isFreelancer,
+    },
   });
 }
