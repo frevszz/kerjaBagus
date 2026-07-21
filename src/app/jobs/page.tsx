@@ -7,23 +7,44 @@ import { Job } from "@/generated/prisma/client";
 import { faker } from "@faker-js/faker";
 import { getCompanyInitials } from "../utils/company";
 import { formatSalaryRange } from "../utils/salary";
+import { Loading } from "../components/loading";
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   async function load() {
+  //     // ini ku limit biar ga lag
+  //     // mungkin nanti bisa ditambahin page
+  //     const { data } = await getJobs({
+  //       limit: 12,
+  //     });
+
+  //     setJobs(data);
+  //   }
+
+  //   load();
+  // }, []);
 
   useEffect(() => {
-    async function load() {
-      // ini ku limit biar ga lag
-      // mungkin nanti bisa ditambahin page
-      const { data } = await getJobs({
-        limit: 12,
-      });
-
-      setJobs(data);
+    async function loadJobs() {
+      try {
+        const { data } = await getJobs({
+          limit: 12,
+        });
+        setJobs(data);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    load();
-  }, []);
+    if (loading) loadJobs();
+  })
+
+  if (loading) {
+    return (<Loading />);
+  }
 
   return (
     <div className="mx-auto py-10 flex-row w-max">
@@ -36,7 +57,7 @@ export default function JobsPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 flex-wrap">
         {jobs.map((job) => (
           <JobCard
             key={job.id}

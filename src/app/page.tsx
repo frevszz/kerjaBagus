@@ -5,6 +5,11 @@ import Link from "next/link";
 import "./page.css";
 import JobCard from "@/app/components/jobCard";
 import { jobs } from "@/app/jobs/data";
+import { Job } from "@/generated/prisma/client";
+import { getJobs } from "@/services/jobs.service";
+import { getCompanyInitials } from "./utils/company";
+import { formatSalaryRange } from "./utils/salary";
+import { faker } from "@faker-js/faker";
 
 const WILAYAH_OPTIONS = [
   "Aceh",
@@ -66,7 +71,19 @@ export default function Home() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const featuredJobs = jobs.slice(0, 4);
+  const [featuredJobs, setFeaturedJobs] = useState<Job[]>([]);
+  
+    useEffect(() => {
+      async function load() {
+        const { data } = await getJobs({
+          limit: 3,
+        });
+  
+        setFeaturedJobs(data);
+      }
+  
+      load();
+    }, []);
 
   return (
     <main className="flex flex-col font-sans">
@@ -142,8 +159,17 @@ export default function Home() {
           {/* JOB CARD */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {featuredJobs.map((job) => (
-              
-              <JobCard key={job.id} {...job} />
+              <JobCard
+                key={job.id}
+                id={job.id}
+                logoText={getCompanyInitials(job.company)}
+                logoColor={faker.color.rgb()}
+                title={job.title}
+                company={job.company}
+                tags={job.tags}
+                salaryRange={formatSalaryRange(job.budgetMin, job.budgetMax)}
+                verified={job.isVerified}
+              />
             ))}
           </div>
         </div>

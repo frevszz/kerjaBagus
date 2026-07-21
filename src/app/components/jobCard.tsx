@@ -36,7 +36,7 @@ export default function JobCard({
         {verified && (
           <span className="flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-1 rounded-full">
             <RiVerifiedBadgeFill size={14} />
-            Terverifikasi Aman
+            Terverifikasi
           </span>
         )}
       </div>
