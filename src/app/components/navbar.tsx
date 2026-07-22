@@ -22,7 +22,7 @@ export default function Navbar() {
       try {
         const data = await me();
         const user = await getUser(data.user.id);
-        const profile = await getProfile(data.user.id);
+        const profile = await getProfile(user.profile.id);
         setUserData(user);
         setProfileData(profile);
       } catch {
