@@ -158,7 +158,7 @@ export default function Home() {
             </h1>
           </div>
 
-          <h2 className="text-4xl max-w-4xl mx-auto font-bold mb-8 text-center">
+          <h2 className="text-4xl max-w-4xl mx-auto font-bold text-[#344F1F] mb-8 text-center">
             Ada Banyak Pilihan Kerjaan yang Pas Buat Keahlianmu
           </h2>
 
