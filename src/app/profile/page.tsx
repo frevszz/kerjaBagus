@@ -12,6 +12,7 @@ import { GetUserResponse } from "@/models/user";
 import { GetProfileResponse } from "@/models/profile";
 import { Loading } from "../components/loading";
 import BackButton from "../components/backButton";
+import ApplicationHistoryCard from "../components/AppHistoryCard";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -161,7 +162,8 @@ export default function ProfilePage() {
             )}
           </div>
 
-          <div className="md:col-span-2 bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+        <ApplicationHistoryCard/>
+          {/* <div className="md:col-span-2 bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
             <h3 className="text-lg font-bold text-gray-800 mb-3">
               Riwayat Lamaran Saya
             </h3>
@@ -169,7 +171,7 @@ export default function ProfilePage() {
             <p className="text-md text-gray-400 italic">
               Belum ada lamaran kerja.
             </p>
-          </div>
+          </div> */}
         </div>
         <button
           className="cursor-pointer bg-red-500 w-30 h-10 rounded-xl text-white text-xl font-bold shadow-sm hover:scale-101 transition-all"

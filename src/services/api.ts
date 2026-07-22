@@ -16,10 +16,10 @@ export async function api<T>(
   const data = await response.json();
 
   if (!response.ok) {
-    // throw new ApiError(
-    //   data.message ?? "Terjadi kesalahan.",
-    //   response.status
-    // );
+    throw new ApiError(
+      data.message ?? "Terjadi kesalahan.",
+      response.status
+    );
   }
 
   return data;
