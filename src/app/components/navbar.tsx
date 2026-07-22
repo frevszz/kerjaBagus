@@ -16,6 +16,7 @@ export default function Navbar() {
   const [userData, setUserData] = useState<GetUserResponse | null>(null);
   const [profileData, setProfileData] = useState<GetProfileResponse | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     async function loadUser() {
@@ -34,6 +35,16 @@ export default function Navbar() {
     loadUser();
   }, []);
 
+  // SCROLL HANDLER
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const navLinks = [
     { href: "/", label: "Beranda" },
     { href: "/jobs", label: "Lowongan" },
@@ -43,7 +54,11 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 flex items-center justify-between h-20 px-4 md:px-15 backdrop-blur-lg bg-white/20">
+    <nav
+      className={`sticky top-0 z-50 flex items-center justify-between h-20 px-4 md:px-15 backdrop-blur-lg bg-white/20 transition-shadow duration-300 ${
+        isScrolled ? "shadow-md shadow-black/10" : "shadow-none"
+      }`}
+    >
       <div className="relative h-30 w-30 md:h-32 md:w-32 shrink-0">
         <Link href="/">
           <Image
