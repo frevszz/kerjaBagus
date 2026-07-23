@@ -20,8 +20,8 @@ export default function Footer() {
   ];
 
   const legalLinks = [
-    { href: "/terms", label: "Syarat & Ketentuan" },
-    { href: "/privacy", label: "Kebijakan Privasi" },
+    { href: "/help", label: "Syarat & Ketentuan" },
+    { href: "/help", label: "Kebijakan Privasi" },
   ];
 
   return (
