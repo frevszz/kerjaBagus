@@ -172,7 +172,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA SECTION */}
+      {/* CALL OF ACTION SECTION */}
       <section className="cta-container bg-[#F4991A] flex flex-col items-center">
         <div className="cta-content mb-10 bg-[#F9F5F0] w-full px-5 py-8 rounded-lg shadow-lg">
           <h1 className="text-3xl md:text-5xl max-w-2xl mx-auto font-bold text-[#344F1F] mb-4 text-center">
@@ -184,15 +184,15 @@ export default function Home() {
             Pilih peranmu dan mulai terhubung hanya dalam hitungan menit
           </p>
 
-          {/* CTA BUTTON */}
-          <div className="flex justify-center mb-5 items-center mt-8 gap-6">
+          {/* ACTION BUTTON */}
+          <div className="flex flex-col md:flex-row justify-center items-center mb-5 mt-8 gap-4 w-full">
             {/* CEK LOWONGAN */}
             <Link
               href="/jobs"
-              className="bg-[#344F1F] hover:bg-[#466B29] text-white flex items-center py-3 px-8 text-2xl font-medium rounded-full text-center transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-103 cursor-pointer"
+              className="w-full md:w-auto max-w-md bg-[#344F1F] hover:bg-[#466B29] text-white flex items-center justify-center gap-3 py-3 md:py-3 px-5 md:px-8 text-xl md:text-2xl font-medium rounded-full transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 cursor-pointer"
             >
               Cek Lowongan
-              <div className="rounded-full w-10 h-10 p-2 bg-white text-black flex items-center justify-center ml-4">
+              <div className="rounded-full w-10 h-10 p-2 bg-white text-black flex items-center justify-center">
                 <RiArrowRightUpLine className="w-5 h-5" />
               </div>
             </Link>
@@ -200,10 +200,10 @@ export default function Home() {
             {/* POST PEKERJAAN */}
             <Link
               href="/jobs/create"
-              className="bg-[#F4991A] hover:bg-[#C46D00] text-white flex items-center py-3 px-8 text-2xl font-medium rounded-full text-center transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-103 cursor-pointer"
+              className="w-full md:w-auto max-w-md bg-[#F4991A] hover:bg-[#C46D00] text-white flex items-center justify-center gap-3 py-3 md:py-3 px-5 md:px-8 text-xl md:text-2xl font-medium rounded-full transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 cursor-pointer"
             >
               Post Pekerjaan
-              <div className="rounded-full w-10 h-10 p-2 bg-white text-black flex items-center justify-center ml-4">
+              <div className="rounded-full w-10 h-10 p-2 bg-white text-black flex items-center justify-center">
                 <RiAddLine className="w-5 h-5" />
               </div>
             </Link>
