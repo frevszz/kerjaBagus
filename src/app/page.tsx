@@ -189,10 +189,10 @@ export default function Home() {
             {/* CEK LOWONGAN */}
             <Link
               href="/jobs"
-              className="w-full md:w-auto max-w-md bg-[#344F1F] hover:bg-[#466B29] text-white flex items-center justify-center gap-3 py-3 md:py-3 px-5 md:px-8 text-xl md:text-2xl font-medium rounded-full transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 cursor-pointer"
+              className="group w-full md:w-auto max-w-md bg-[#344F1F] hover:bg-[#466B29] text-white flex items-center justify-center gap-3 py-3 md:py-3 px-5 md:px-8 text-xl md:text-2xl font-medium rounded-full transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 cursor-pointer"
             >
               Cek Lowongan
-              <div className="rounded-full w-10 h-10 p-2 bg-white text-black flex items-center justify-center">
+              <div className="rounded-full w-10 h-10 p-2 bg-white text-black flex items-center justify-center transition-transform duration-300 group-hover:rotate-45">
                 <RiArrowRightUpLine className="w-5 h-5" />
               </div>
             </Link>
@@ -200,10 +200,10 @@ export default function Home() {
             {/* POST PEKERJAAN */}
             <Link
               href="/jobs/create"
-              className="w-full md:w-auto max-w-md bg-[#F4991A] hover:bg-[#C46D00] text-white flex items-center justify-center gap-3 py-3 md:py-3 px-5 md:px-8 text-xl md:text-2xl font-medium rounded-full transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 cursor-pointer"
+              className="w-full group md:w-auto max-w-md bg-[#F4991A] hover:bg-[#C46D00] text-white flex items-center justify-center gap-3 py-3 md:py-3 px-5 md:px-8 text-xl md:text-2xl font-medium rounded-full transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 cursor-pointer"
             >
               Post Pekerjaan
-              <div className="rounded-full w-10 h-10 p-2 bg-white text-black flex items-center justify-center">
+              <div className="rounded-full w-10 h-10 p-2 bg-white text-black flex items-center justify-center transition-transform duration-300 group-hover:rotate-90">
                 <RiAddLine className="w-5 h-5" />
               </div>
             </Link>
