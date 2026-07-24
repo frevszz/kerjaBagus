@@ -49,6 +49,18 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // LOCK BODY SCROLL SAAT MENU MOBILE TERBUKA
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
   const navLinks = [
     { href: "/", label: "Beranda" },
     { href: "/jobs", label: "Lowongan" },
@@ -143,7 +155,7 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* OVERLAY GELAP (opsional, biar fokus ke menu) */}
+      {/* OVERLAY GELAP */}
       {mobileOpen && (
         <div
           onClick={() => setMobileOpen(false)}
@@ -153,7 +165,7 @@ export default function Navbar() {
 
       {/* MENU MOBILE */}
       <div
-        className={`fixed inset-y-20 right-0 z-50 w-[85vw] h-screen max-w-sm xl:hidden bg-white shadow-lg border-l border-gray-100 flex flex-col p-4 gap-4 transform transition-transform duration-300 ease-out ${
+        className={`fixed top-20 bottom-0 right-0 z-50 w-[85vw] max-w-sm xl:hidden bg-white shadow-lg border-l border-gray-100 flex flex-col p-4 gap-4 overflow-y-auto transform transition-transform duration-300 ease-out ${
           mobileOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >

@@ -1,8 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link"; 
-import { RiEditLine, RiMailFill, RiMailLine, RiMapPin2Line, RiMapPinFill, RiUserSharedLine } from "@remixicon/react";
+import Link from "next/link";
+import {
+  RiEditLine,
+  RiMailFill,
+  RiMailLine,
+  RiMapPin2Line,
+  RiMapPinFill,
+  RiUserSharedLine,
+} from "@remixicon/react";
 import { useRouter } from "next/navigation";
 import { logout, me } from "@/services/auth.service";
 import { RiArrowLeftLine } from "@remixicon/react";
@@ -21,7 +28,9 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
 
   const [userData, setUserData] = useState<GetUserResponse | null>(null);
-  const [profileData, setProfileData] = useState<GetProfileResponse | null>(null);
+  const [profileData, setProfileData] = useState<GetProfileResponse | null>(
+    null,
+  );
 
   useEffect(() => {
     async function loadUser() {
@@ -77,17 +86,17 @@ export default function ProfilePage() {
     if (!profileData) return;
     if (profileData.bio === value) return;
     await updateProfile(profileData.id, {
-      bio: value
+      bio: value,
     });
-  }
+  };
 
   const handleOnChangeHeadline = async (value: string) => {
     if (!profileData) return;
     if (profileData.headline === value) return;
     await updateProfile(profileData.id, {
-      headline: value
+      headline: value,
     });
-  }
+  };
 
   return (
     <div className="min-h-screen bg-[#FAF8F0] px-6 py-10">
@@ -96,58 +105,72 @@ export default function ProfilePage() {
         <BackButton />
 
         {/* CONTENT */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between gap-4">
-  {/* Bagian Kiri: Profil & Detail */}
-  <div className="flex items-center gap-5">
-    {/* Avatar (Pakai shrink-0 biar gak benyok) */}
-    <div className="w-20 h-20 rounded-full bg-[#D8E6D3] text-[#386641] flex-shrink-0 flex items-center justify-center font-bold text-2xl border border-[#386641]/20">
-      {getInitials(profileData?.displayName ?? "")}
-    </div>
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          {/* Bagian Kiri: Profil & Detail */}
+          <div className="flex flex-col sm:flex-row items-start gap-5 w-full">
+            {/* Avatar (Pakai shrink-0 biar gak benyok) */}
+            <div className="w-20 h-20 rounded-full bg-[#D8E6D3] text-[#386641] flex-shrink-0 flex items-center justify-center font-bold text-2xl border border-[#386641]/20">
+              {getInitials(profileData?.displayName ?? "")}
+            </div>
 
-    {/* Info User */}
-    <div>
-      <section className="flex gap-2 items-end">
-        <h1 className="text-2xl font-bold text-gray-800">
-          {profileData?.displayName || "Nama Pengguna"}
-        </h1>
-        <span className="text-lg text-gray-500">@{profileData?.username ?? ""}</span>
-      </section>
+            {/* Info User */}
+            <div className="w-full">
+              <section className="flex flex-col sm:flex-row gap-2 items-start sm:items-end justify-between w-full">
+                <div className="space-y-1">
+                  <h1 className="text-2xl font-bold text-gray-800">
+                    {profileData?.displayName || "Nama Pengguna"}
+                  </h1>
+                  <span className="text-sm text-gray-500">
+                    @{profileData?.username ?? ""}
+                  </span>
+                </div>
+              </section>
 
-      <EditableCard initialBody={profileData?.headline ?? ""} widthType="wrap" maxLength={60} onChange={handleOnChangeHeadline} />
-      {/* <p className="text-md text-gray-500"></p> */}
+              <EditableCard
+                initialBody={profileData?.headline ?? ""}
+                widthType="wrap"
+                maxLength={60}
+                onChange={handleOnChangeHeadline}
+              />
 
-      <p className="text-gray-400 mt-1 flex gap-2 font-light">
-        <span className="flex gap-1 items-center"><RiMapPin2Line className="w-4" /> {profileData?.address?.province ?? ""}</span>
-        <span className="flex gap-1 items-center"><RiMailLine className="w-4" /> {userData?.email ?? ""}</span>
-      </p>
-    </div>
-  </div>
+              <p className="text-gray-400 mt-2 flex flex-col sm:flex-row sm:items-center gap-2 font-light">
+                <span className="flex gap-1 items-center">
+                  <RiMapPin2Line className="w-4" />{" "}
+                  {profileData?.address?.province ?? ""}
+                </span>
+                <span className="flex gap-1 items-center">
+                  <RiMailLine className="w-4" /> {userData?.email ?? ""}
+                </span>
+              </p>
+            </div>
+          </div>
 
-  {/* Bagian Kanan: Tombol Ubah Role (Persis di tengah vertikal) */}
-  <Link
-    href="/role"
-    className="flex items-center gap-2 border border-amber-400 bg-amber-50 rounded-xl px-4 py-2.5 text-xs font-semibold text-amber-800 hover:bg-amber-100 transition shadow-sm flex-shrink-0"
-  >
-    <RiUserSharedLine size={16} />
-    Ubah Peran (Role)
-  </Link>
+          {/* Bagian Kanan: Tombol Ubah Role (Persis di tengah vertikal) */}
+          <Link
+            href="/role"
+            className="w-full md:max-w-50 flex items-center justify-center gap-2 border border-amber-400 bg-amber-50 rounded-xl px-4 py-2.5 text-xs font-semibold text-amber-800 hover:bg-amber-100 transition shadow-sm"
+          >
+            <RiUserSharedLine size={16} />
+            Ubah Peran (Role)
+          </Link>
 
-  {/* <button
+          {/* <button
     onClick={() => router.push("/profile/edit")}
     className="flex items-center gap-2 border border-gray-300 rounded-lg px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition cursor-pointer"
   >
     <RiEditLine size={16} />
     Edit Profil
   </button> */}
-</div>
-
-        <div className="rounded-xl border border-gray-200 p-4 bg-white shadow-sm">
-          <h3 className="text-lg font-bold text-gray-800 mb-3">
-            Tentang Saya
-          </h3>
-          <EditableCard initialBody={profileData?.bio ?? ""} maxLength={500} onChange={handleOnChangeBio} />
         </div>
 
+        <div className="rounded-xl border border-gray-200 p-4 bg-white shadow-sm">
+          <h3 className="text-lg font-bold text-gray-800 mb-3">Tentang Saya</h3>
+          <EditableCard
+            initialBody={profileData?.bio ?? ""}
+            maxLength={500}
+            onChange={handleOnChangeBio}
+          />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
@@ -173,7 +196,7 @@ export default function ProfilePage() {
             )}
           </div>
 
-        <ApplicationHistoryCard/>
+          <ApplicationHistoryCard />
           {/* <div className="md:col-span-2 bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
             <h3 className="text-lg font-bold text-gray-800 mb-3">
               Riwayat Lamaran Saya
