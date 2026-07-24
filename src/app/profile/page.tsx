@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { RiEditLine, RiMailFill, RiMailLine, RiMapPin2Line, RiMapPinFill } from "@remixicon/react";
+import Link from "next/link"; 
+import { RiEditLine, RiMailFill, RiMailLine, RiMapPin2Line, RiMapPinFill, RiUserSharedLine } from "@remixicon/react";
 import { useRouter } from "next/navigation";
 import { logout, me } from "@/services/auth.service";
 import { RiArrowLeftLine } from "@remixicon/react";
@@ -95,40 +96,50 @@ export default function ProfilePage() {
         <BackButton />
 
         {/* CONTENT */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between">
-          <div className="flex items-center gap-5">
-            <div className="w-20 h-20 rounded-full bg-[#D8E6D3] text-[#386641] flex items-center justify-center font-bold text-2xl border border-[#386641]/20">
-              {getInitials(profileData?.displayName ?? "")}
-            </div>
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center justify-between gap-4">
+  {/* Bagian Kiri: Profil & Detail */}
+  <div className="flex items-center gap-5">
+    {/* Avatar (Pakai shrink-0 biar gak benyok) */}
+    <div className="w-20 h-20 rounded-full bg-[#D8E6D3] text-[#386641] flex-shrink-0 flex items-center justify-center font-bold text-2xl border border-[#386641]/20">
+      {getInitials(profileData?.displayName ?? "")}
+    </div>
 
-            <div>
-              
-              <section className="flex gap-2 items-end">
-                <h1 className="text-2xl font-bold text-gray-800">
-                  {profileData?.displayName || "Nama Pengguna"}
-                </h1>
-                <span className="text-lg text-gray-500">@{profileData?.username ?? ""}</span>
-              </section>
+    {/* Info User */}
+    <div>
+      <section className="flex gap-2 items-end">
+        <h1 className="text-2xl font-bold text-gray-800">
+          {profileData?.displayName || "Nama Pengguna"}
+        </h1>
+        <span className="text-lg text-gray-500">@{profileData?.username ?? ""}</span>
+      </section>
 
+      <EditableCard initialBody={profileData?.headline ?? ""} widthType="wrap" maxLength={60} onChange={handleOnChangeHeadline} />
+      {/* <p className="text-md text-gray-500"></p> */}
 
-              <EditableCard initialBody={profileData?.headline ?? ""} widthType="wrap" maxLength={60} onChange={handleOnChangeHeadline} />
-              {/* <p className="text-md text-gray-500"></p> */}
+      <p className="text-gray-400 mt-1 flex gap-2 font-light">
+        <span className="flex gap-1 items-center"><RiMapPin2Line className="w-4" /> {profileData?.address?.province ?? ""}</span>
+        <span className="flex gap-1 items-center"><RiMailLine className="w-4" /> {userData?.email ?? ""}</span>
+      </p>
+    </div>
+  </div>
 
-              <p className="text-gray-400 mt-1 flex gap-2 font-light">
-                <span className="flex gap-1 items-center"><RiMapPin2Line className="w-4" /> {profileData?.address?.province ?? ""}</span>
-                <span className="flex gap-1 items-center"><RiMailLine className="w-4" /> {userData?.email ?? ""}</span>
-              </p>
-            </div>
-          </div>
+  {/* Bagian Kanan: Tombol Ubah Role (Persis di tengah vertikal) */}
+  <Link
+    href="/role"
+    className="flex items-center gap-2 border border-amber-400 bg-amber-50 rounded-xl px-4 py-2.5 text-xs font-semibold text-amber-800 hover:bg-amber-100 transition shadow-sm flex-shrink-0"
+  >
+    <RiUserSharedLine size={16} />
+    Ubah Peran (Role)
+  </Link>
 
-          {/* <button
-            onClick={() => router.push("/profile/edit")}
-            className="flex items-center gap-2 border border-gray-300 rounded-lg px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition cursor-pointer"
-          >
-            <RiEditLine size={16} />
-            Edit Profil
-          </button> */}
-        </div>
+  {/* <button
+    onClick={() => router.push("/profile/edit")}
+    className="flex items-center gap-2 border border-gray-300 rounded-lg px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition cursor-pointer"
+  >
+    <RiEditLine size={16} />
+    Edit Profil
+  </button> */}
+</div>
 
         <div className="rounded-xl border border-gray-200 p-4 bg-white shadow-sm">
           <h3 className="text-lg font-bold text-gray-800 mb-3">
