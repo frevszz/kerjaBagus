@@ -165,7 +165,7 @@ export default function Navbar() {
 
       {/* MENU MOBILE */}
       <div
-        className={`fixed top-20 bottom-0 right-0 z-50 w-[85vw] max-w-sm xl:hidden bg-white shadow-lg border-l border-gray-100 flex flex-col p-4 gap-4 overflow-y-auto transform transition-transform duration-300 ease-out ${
+        className={`fixed top-20 bottom-0 right-0 z-50 w-[85vw] max-w-sm xl:hidden bg-white shadow-lg border-l border-gray-100 flex flex-col p-4 gap-4 overflow-y-auto transform transition-transform duration-300 ease-in ${
           mobileOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
