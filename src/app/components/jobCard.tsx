@@ -27,7 +27,7 @@ export default function JobCard({
   verified = true,
 }: JobCardProps) {
   return (
-    <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex flex-col gap-3 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-[1.01] cursor-pointer">
+    <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex flex-col gap-3 cursor-pointer">
       {/* HEADER */}
       <div className="flex items-start justify-between">
         <div
@@ -81,13 +81,13 @@ export default function JobCard({
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="h-9 w-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+            className="h-9 w-9 flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-[1.01]"
           >
             <RiBookmarkLine size={16} className="text-gray-500" />
           </button>
           <button
             type="button"
-            className="text-gray-900 text-sm font-semibold px-5 py-2 transition rounded-lg border border-gray-200 hover:bg-gray-50"
+            className="text-gray-900 text-sm font-semibold px-5 py-2 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-[1.01] rounded-lg border border-gray-200 hover:bg-gray-50"
           >
             Lamar
           </button>
