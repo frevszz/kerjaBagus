@@ -1,32 +1,100 @@
+# KerjaBagus
+
+**KerjaBagus** adalah platform freelance job marketplace yang menghubungkan **client** dengan **freelancer**. Dibangun dengan Next.js App Router, TypeScript, dan PostgreSQL, aplikasi ini memungkinkan pengguna mencari pekerjaan lepas, menyimpan lowongan favorit, dan menghubungi pemberi kerja langsung lewat WhatsApp.
+
+🔗 Live demo: [kerja-bagus.vercel.app](https://kerja-bagus.vercel.app)
+
+> 🏆 Proyek ini dibangun dalam rangka mengikuti kompetisi **Veternity Beraksi 2026**.
+
+## Fitur
+
+- 🔐 **Autentikasi custom** dengan sistem role berbasis boolean (`isClient`, `isFreelancer`, `isAdmin`)
+- 💼 **Listing & detail pekerjaan** dengan dynamic routing
+- 🔎 **Pencarian & filter job** berdasarkan kategori dan provinsi (34 provinsi Indonesia)
+- 💾 **Simpan lowongan** (bookmarks) dengan optimistic UI update
+- 📱 **WhatsApp contact integration** dengan normalisasi nomor telepon
+- 📂 **Kategori pekerjaan** dalam bentuk grid
+- ❓ **FAQ accordion**
+- 📱 **Fully responsive**, termasuk sliding mobile navbar drawer
+- 🎨 UI dengan brand color hijau (`#344F1F`) dan oranye (`#F4991A`)
+
+## Tech Stack
+
+| Kategori  | Teknologi                                                           |
+| --------- | ------------------------------------------------------------------- |
+| Framework | [Next.js 16](https://nextjs.org/) (App Router)                      |
+| Bahasa    | TypeScript                                                          |
+| Styling   | Tailwind CSS v4                                                     |
+| Database  | PostgreSQL                                                          |
+| ORM       | Prisma 7 (`@prisma/client`, `@prisma/adapter-pg`)                   |
+| Auth      | Custom (JWT via `jose`, hashing via `bcrypt`)                       |
+| Icon      | `@remixicon/react`                                                  |
+| Lainnya   | `react-select`, `@faker-js/faker` (seeding), `prisma-erd-generator` |
+
+## Struktur Proyek
+
+```
+kerjaBagus/
+├── prisma/           # Schema & migrasi database
+├── public/           # Aset statis
+├── src/
+│   ├── app/          # Routes (App Router)
+│   ├── components/   # Komponen UI (Navbar, JobCard, FaqItem, dll)
+│   ├── contexts/      # AuthContext.tsx (hook useAuth())
+│   ├── models/        # Definisi tipe/model data
+│   ├── services/       # Layer pemanggilan API (helper api())
+│   └── lib/            # Konstanta & utilitas (mis. daftar provinsi)
+└── package.json
+```
+
 ## Getting Started
 
-**First of all, install all required packages:**
+### 1. Clone repository
+
+```bash
+git clone https://github.com/frevszz/kerjaBagus.git
+cd kerjaBagus
+```
+
+### 2. Install dependencies
 
 ```bash
 npm i
 ```
 
-**Second, setup the db**
+### 3. Setup environment & database
 
-Copy the `.example.env` file, rename it to `.env`, then open it up.
-You will see `DATABASE_URL` variable.
-Now you must fill it with local or hosted postgres db url.
+Copy `.example.env` menjadi `.env`, lalu isi variabel `DATABASE_URL` dengan URL PostgreSQL kamu (lokal atau cloud, mis. Prisma Accelerate).
 
-After that, run `npx prisma generate`.
-This will generate a library in `src/generated/prisma`.
+```bash
+cp .example.env .env
+```
 
-**That's all ig, Now you can run the development server:**
+Generate Prisma client:
+
+```bash
+npx prisma generate
+```
+
+Jika perlu menerapkan schema ke database:
+
+```bash
+npx prisma migrate dev
+```
+
+### 4. Jalankan development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000) di browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
+
+| Command         | Deskripsi                                 |
+| --------------- | ----------------------------------------- |
+| `npm run dev`   | Menjalankan development server            |
+| `npm run build` | Generate Prisma client + build production |
+| `npm run start` | Menjalankan production server             |
+| `npm run lint`  | Menjalankan ESLint                        |
