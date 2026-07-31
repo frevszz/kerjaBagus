@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import BackButton from "@/app/components/backButton";
 import TagPopover from "@/app/components/tagPopover";
 import Select from "react-select";
-// import "react-select/dist/react-select.css";
 import { api } from "@/services/api";
 import { me } from "@/services/auth.service";
 import { getProfile } from "@/services/profiles.service";

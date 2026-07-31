@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { RiBookmarkLine, RiBookmarkFill } from "@remixicon/react";
-import { isJobSaved, toggleSaveJob } from "@/app/utils/savedJobs"; // Sesuaikan path utilitas bookmark kamu
+import { isJobSaved, toggleSaveJob } from "@/app/utils/savedJobs";
 
 type Props = {
   job: {

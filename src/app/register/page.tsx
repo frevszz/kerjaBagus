@@ -55,7 +55,6 @@ export default function RegisterPage() {
     } = formData;
 
     try {
-      // 1. Register User (tanpa mengirim isClient & isFreelancer di sini)
       const { user: registerUser } = await register({
         email,
         username,
@@ -64,13 +63,11 @@ export default function RegisterPage() {
         phone,
       } as any);
 
-      // 2. Update role user (isClient & isFreelancer)
       const user = await updateUser(registerUser.id, {
         isClient,
         isFreelancer,
       });
 
-      // 3. Update data alamat di profile
       if (user?.profile?.id) {
         await updateProfile(user.profile.id, {
           address: {
@@ -84,7 +81,6 @@ export default function RegisterPage() {
         } as any);
       }
 
-      // 4. Pindah ke halaman profil jika berhasil
       router.push("/profile");
     } catch (err) {
       console.error("Gagal melakukan registrasi:", err);

@@ -250,15 +250,14 @@ export async function POST(request: Request) {
       status: 201,
     });
   } catch (error) {
-    console.error(error);
-
-    return Response.json(
+     return Response.json(
       {
         message: "Failed to create job",
+        error: error instanceof Error ? error.message : String(error),
       },
       {
         status: 500,
-      },
+      }
     );
   }
 }
