@@ -17,11 +17,11 @@ export const metadata = {
   title: "Kerja Bagus",
   description: "Temukan proyek dan lowongan yang cocok",
   icons: {
-    icon: "/logo/logo.svg",
-    apple: "/logo/logo.svg",
+    icon: "/icon.svg",
+    apple: "/icon.svg",
   },
   openGraph: {
-    images: ["/logo/logo.svg"],
+    images: ["/icon.svg"],
   },
 };
 
